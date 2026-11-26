@@ -3,6 +3,7 @@ import { Card } from '../../components/Card'
 import { PageHeader } from '../../components/PageHeader'
 import { useTheme, type ThemeSetting } from '../../lib/theme'
 import { DataCard } from './DataCard'
+import { InstallCard } from './InstallCard'
 
 const options: { value: ThemeSetting; label: string; icon: typeof Sun }[] = [
   { value: 'system', label: 'System', icon: Monitor },
@@ -37,6 +38,7 @@ export function SettingsPage() {
         </div>
       </Card>
       <DataCard />
+      <InstallCard />
       <Card className="mt-4">
         <h2 className="mb-1 font-semibold">Herzfrequenzzonen</h2>
         <p className="text-sm text-slate-600 dark:text-slate-300">Kommt in Schritt 9.</p>

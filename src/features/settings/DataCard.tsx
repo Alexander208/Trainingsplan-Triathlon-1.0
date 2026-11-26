@@ -53,7 +53,7 @@ export function DataCard() {
       <h2 className="mb-1 font-semibold">Daten</h2>
       <p className="mb-3 text-sm text-slate-600 dark:text-slate-300">
         {counts
-          ? `${counts.plans} Pläne · ${counts.workouts} Einheiten · ${counts.races} Wettkämpfe`
+          ? `${counts.plans} ${counts.plans === 1 ? 'Plan' : 'Pläne'} · ${counts.workouts} Einheiten · ${counts.races} ${counts.races === 1 ? 'Wettkampf' : 'Wettkämpfe'}`
           : 'Lade …'}
         <br />
         <span className="text-slate-500 dark:text-slate-400">

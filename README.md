@@ -53,6 +53,25 @@ Das Terminal zeigt eine Adresse wie `http://192.168.x.x:5173` – diese in Safar
 
 ---
 
+## Auf dem iPhone installieren
+
+Die App wird automatisch auf **GitHub Pages** veröffentlicht, sobald Code im Branch `main` landet
+(siehe `.github/workflows/deploy.yml`):
+
+**https://alexander208.github.io/Trainingsplan-Triathlon-1.0/**
+
+1. Den Link in **Safari** auf dem iPhone öffnen.
+2. **Teilen** (Quadrat mit Pfeil) → **„Zum Home-Bildschirm“** → „Hinzufügen“.
+3. TriPlan über das neue Icon öffnen und unter **Einstellungen → Daten → Importieren** den Plan
+   (`mein-plan.json`, z. B. aus der Dateien-App oder iCloud Drive) laden.
+
+Wichtig: Die installierte App hat auf dem iPhone einen **eigenen Speicher**, getrennt von Safari.
+Daten also immer in der installierten App importieren. Updates werden beim nächsten Öffnen automatisch geladen.
+
+**Einmalig auf GitHub einrichten:** Repository → *Settings* → *Pages* → bei „Source“ **GitHub Actions** wählen.
+
+---
+
 ## Befehle
 
 | Befehl            | Was passiert                                              |
@@ -75,6 +94,8 @@ src/
     settings/     Einstellungen
   db/           Datenbank (Dexie/IndexedDB), Backup & Import
   data/         Demo-Daten (später Vorlagen)
+  public/       Icons, die unverändert ausgeliefert werden
+  scripts/      Hilfsskripte (z. B. Icons erzeugen: node scripts/make-icons.cjs)
   lib/          Hilfsfunktionen (Datum, Dauer/Distanz, Dark Mode, IDs)
   types/        Datenmodell (TypeScript-Typen)
   App.tsx       Seiten/Routen
@@ -101,7 +122,7 @@ bleiben nur auf dem Gerät.
 - [x] 1. Grundgerüst: Navigation, Dark Mode, README
 - [x] 2. Datenbank, Import/Export (JSON), eigener Plan als Importdatei
 - [x] 3. „Heute“-Ansicht mit Wettkampf-Countdown
-- [ ] 4. Veröffentlichung (GitHub Pages) + PWA → aufs iPhone
+- [x] 4. Veröffentlichung (GitHub Pages) + PWA → aufs iPhone
 - [ ] 5. Einheit abschließen
 - [ ] 6. Pläne verwalten
 - [ ] 7. Einheit-Editor mit Abschnitten und Kraftübungen
