@@ -11,7 +11,7 @@ const options: { value: ThemeSetting; label: string; icon: typeof Sun }[] = [
 ]
 
 export function SettingsPage() {
-  const [theme, setTheme] = useTheme()
+  const { setting: theme, setTheme } = useTheme()
 
   return (
     <>

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useSyncExternalStore } from 'react'
 
 export type ThemeSetting = 'system' | 'light' | 'dark'
 
 const STORAGE_KEY = 'theme'
+const media = window.matchMedia('(prefers-color-scheme: dark)')
 
 function readSetting(): ThemeSetting {
   try {
@@ -14,33 +15,51 @@ function readSetting(): ThemeSetting {
   return 'system'
 }
 
-function apply(setting: ThemeSetting) {
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-  const dark = setting === 'dark' || (setting === 'system' && prefersDark)
-  document.documentElement.classList.toggle('dark', dark)
-  document
-    .querySelector('meta[name="theme-color"]')
-    ?.setAttribute('content', dark ? '#0b0f17' : '#f8fafc')
+// ---------------------------------------------------------------------------
+// Gemeinsamer Speicher: Lampen-Knopf und Einstellungen zeigen immer denselben Stand.
+// ---------------------------------------------------------------------------
+
+let setting: ThemeSetting = readSetting()
+const listeners = new Set<() => void>()
+
+function isDark(): boolean {
+  return setting === 'dark' || (setting === 'system' && media.matches)
 }
 
-/** Hell/Dunkel/System – wird im Browser gespeichert. */
+function apply() {
+  const dark = isDark()
+  document.documentElement.classList.toggle('dark', dark)
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#0b0f17' : '#f8fafc')
+  listeners.forEach((l) => l())
+}
+
+// Bei „System“ auf Änderungen der Geräte-Einstellung reagieren
+media.addEventListener('change', () => setting === 'system' && apply())
+apply()
+
+function subscribe(listener: () => void) {
+  listeners.add(listener)
+  return () => listeners.delete(listener)
+}
+
+export function setTheme(next: ThemeSetting) {
+  setting = next
+  try {
+    localStorage.setItem(STORAGE_KEY, next)
+  } catch {
+    /* ignorieren */
+  }
+  apply()
+}
+
+/** Wechselt zwischen hell und dunkel (für den Lampen-Knopf). */
+export function toggleTheme() {
+  setTheme(isDark() ? 'light' : 'dark')
+}
+
+/** Aktuelle Einstellung und ob gerade dunkel angezeigt wird. */
 export function useTheme() {
-  const [setting, setSetting] = useState<ThemeSetting>(readSetting)
-
-  useEffect(() => {
-    apply(setting)
-    try {
-      localStorage.setItem(STORAGE_KEY, setting)
-    } catch {
-      /* ignorieren */
-    }
-    if (setting !== 'system') return
-    // Bei "System" auf Änderungen der Systemeinstellung reagieren
-    const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    const onChange = () => apply('system')
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [setting])
-
-  return [setting, setSetting] as const
+  const current = useSyncExternalStore(subscribe, () => setting)
+  const dark = useSyncExternalStore(subscribe, isDark)
+  return { setting: current, dark, setTheme, toggleTheme }
 }
