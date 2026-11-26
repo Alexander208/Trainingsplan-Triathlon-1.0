@@ -217,6 +217,24 @@ export interface Settings {
 }
 
 // ---------------------------------------------------------------------------
+// Verbindungen zu anderen Diensten
+// ---------------------------------------------------------------------------
+
+export interface StravaIntegration {
+  id: 'strava'
+  clientId: string
+  clientSecret: string
+  accessToken?: string
+  refreshToken?: string
+  /** Ablauf des Access-Tokens (Sekunden seit 1970, wie von Strava geliefert) */
+  expiresAt?: number
+  athleteName?: string
+  lastSyncAt?: ISODateTime
+}
+
+export type Integration = StravaIntegration
+
+// ---------------------------------------------------------------------------
 // Backup / Import
 // ---------------------------------------------------------------------------
 

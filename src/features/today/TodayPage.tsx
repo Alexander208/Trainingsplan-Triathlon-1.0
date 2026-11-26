@@ -10,6 +10,7 @@ import { formatDuration, groupBricks, plannedTotals } from '../../lib/workout'
 import type { Workout } from '../../types'
 import { WorkoutGroup } from '../workouts/WorkoutCard'
 import { RaceCountdown } from './RaceCountdown'
+import { StravaStatus } from './StravaStatus'
 
 const DAYS_AHEAD = 6
 
@@ -70,6 +71,7 @@ export function TodayPage() {
     <>
       <PageHeader title="Heute" subtitle={subtitle} />
 
+      <StravaStatus />
       <RaceCountdown races={races} today={today} />
 
       {currentWeeks.map(({ week, plan }) => (

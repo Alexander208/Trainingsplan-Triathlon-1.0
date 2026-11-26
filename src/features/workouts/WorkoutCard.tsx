@@ -32,6 +32,16 @@ function ResultBox({ w }: { w: Workout }) {
       {values.length > 0 && <p className="font-medium tabular-nums">{values.join(' · ')}</p>}
       {r.testValue && <p className="mt-0.5">Testergebnis: <strong>{r.testValue}</strong></p>}
       {r.note && <p className="mt-0.5 text-emerald-800/80 italic dark:text-emerald-200/80">„{r.note}“</p>}
+      {w.external?.source === 'strava' && (
+        <a
+          href={`https://www.strava.com/activities/${w.external.id}`}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-1 inline-block text-xs font-medium text-[#fc4c02] underline"
+        >
+          Auf Strava ansehen
+        </a>
+      )}
     </div>
   )
 }

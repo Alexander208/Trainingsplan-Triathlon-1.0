@@ -1,5 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie'
-import type { Plan, Race, Settings, Week, Workout } from '../types'
+import type { Integration, Plan, Race, Settings, Week, Workout } from '../types'
 
 /**
  * Die Datenbank liegt im Browser (IndexedDB) – also nur auf diesem Gerät.
@@ -14,6 +14,8 @@ export class TriPlanDB extends Dexie {
   workouts!: EntityTable<Workout, 'id'>
   races!: EntityTable<Race, 'id'>
   settings!: EntityTable<Settings, 'id'>
+  /** Zugangsdaten für Strava & Co. – bleiben auf dem Gerät, kommen NICHT ins Backup. */
+  integrations!: EntityTable<Integration, 'id'>
 
   constructor() {
     super('triplan')
@@ -23,6 +25,10 @@ export class TriPlanDB extends Dexie {
       workouts: 'id, date, planId, weekId, status, sport, brickGroupId, updatedAt',
       races: 'id, date',
       settings: 'id',
+    })
+    // Version 2: neue Tabelle für Verbindungen (Strava). Bestehende Daten bleiben erhalten.
+    this.version(2).stores({
+      integrations: 'id',
     })
   }
 }

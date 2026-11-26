@@ -4,6 +4,7 @@ import { PageHeader } from '../../components/PageHeader'
 import { useTheme, type ThemeSetting } from '../../lib/theme'
 import { DataCard } from './DataCard'
 import { InstallCard } from './InstallCard'
+import { StravaCard } from './StravaCard'
 
 const options: { value: ThemeSetting; label: string; icon: typeof Sun }[] = [
   { value: 'system', label: 'System', icon: Monitor },
@@ -37,6 +38,7 @@ export function SettingsPage() {
           ))}
         </div>
       </Card>
+      <StravaCard />
       <DataCard />
       <InstallCard />
       <Card className="mt-4">

@@ -113,6 +113,17 @@ Unter **Einstellungen → Daten**:
 Aufbau der Datei: `{ "app": "triplan", "schemaVersion": 1, "data": { plans, weeks, workouts, races, settings } }`
 – die genauen Felder stehen in `src/types/index.ts`.
 
+## Strava-Sync (Garmin → Strava → TriPlan)
+
+1. Garmin Connect mit Strava verbinden (Garmin-Connect-App → Einstellungen → Verbundene Apps → Strava).
+2. Auf [strava.com/settings/api](https://www.strava.com/settings/api) eine eigene API-App anlegen;
+   **Autorisierungs-Callback-Domain:** `alexander208.github.io` (localhost funktioniert automatisch).
+3. In TriPlan unter **Einstellungen → Strava** Client-ID und Client-Secret eintragen → „Mit Strava verbinden“.
+
+Danach gleicht TriPlan beim Öffnen automatisch ab (höchstens alle 10 Minuten, oder per Knopf):
+gleicher Tag + gleiche Sportart → geplante Einheit wird abgehakt; sonst wird die Aktivität als „ungeplant“ eingetragen.
+Zugangsdaten bleiben auf dem Gerät und kommen nicht ins Backup. Code: `src/integrations/`.
+
 ## Datenschutz
 Das Repository ist öffentlich. Persönliche Trainingsdaten (z. B. `mein-plan.json`) sind in
 `.gitignore` eingetragen und werden **nie** hochgeladen. Sie werden in der App importiert und
@@ -124,7 +135,7 @@ bleiben nur auf dem Gerät.
 - [x] 3. „Heute“-Ansicht mit Wettkampf-Countdown
 - [x] 4. Veröffentlichung (GitHub Pages) + PWA → aufs iPhone
 - [x] 5. Einheit abschließen
-- [ ] 6. Strava-Sync (Garmin → Strava → TriPlan, automatisch beim Öffnen)
+- [x] 6. Strava-Sync (Garmin → Strava → TriPlan, automatisch beim Öffnen)
 - [ ] 7. Pläne verwalten
 - [ ] 8. Einheit-Editor mit Abschnitten und Kraftübungen
 - [ ] 9. Wochenansicht mit Drag & Drop
