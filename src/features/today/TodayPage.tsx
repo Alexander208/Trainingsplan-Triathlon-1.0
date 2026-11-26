@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Link } from 'react-router-dom'
-import { AlertTriangle, CalendarCheck, ScrollText } from 'lucide-react'
+import { AlertTriangle, CalendarCheck, ChevronDown, ScrollText } from 'lucide-react'
 import { Card } from '../../components/Card'
 import { PageHeader } from '../../components/PageHeader'
 import { db } from '../../db/db'
@@ -45,16 +45,20 @@ export function TodayPage() {
       .filter((w) => w.endDate >= today)
       .map((w) => ({ week: w, plan: plans.find((p) => p.id === w.planId) }))
       .filter((x) => x.plan && x.plan.source !== 'demo')
+    // Verpasste Einheiten der letzten 7 Tage, die noch weder erledigt noch ausgelassen sind
+    const open = (await db.workouts.where('date').between(addDays(today, -7), today, true, false).toArray())
+      .filter((w) => w.status === 'planned' && w.sport !== 'rest')
+      .sort((a, b) => a.date.localeCompare(b.date) || a.order - b.order)
     const nextWorkout = workouts.length
       ? undefined
       : await db.workouts.where('date').above(until).first()
-    return { workouts, currentWeeks, activePlans, races: [...races.filter((r) => r.priority === 'A').slice(0, 1), ...races.filter((r) => r.priority !== 'A')].slice(0, 2).sort((a, b) => a.date.localeCompare(b.date)), totalWorkouts, nextWorkout }
+    return { workouts, open, currentWeeks, activePlans, races: [...races.filter((r) => r.priority === 'A').slice(0, 1), ...races.filter((r) => r.priority !== 'A')].slice(0, 2).sort((a, b) => a.date.localeCompare(b.date)), totalWorkouts, nextWorkout }
   }, [today, until])
 
   const subtitle = formatDate(today, { weekday: 'long', day: 'numeric', month: 'long' })
   if (!data) return <PageHeader title="Heute" subtitle={subtitle} />
 
-  const { workouts, currentWeeks, activePlans, races, totalWorkouts, nextWorkout } = data
+  const { workouts, open, currentWeeks, activePlans, races, totalWorkouts, nextWorkout } = data
   const byDate = new Map<string, Workout[]>()
   for (const w of workouts) byDate.set(w.date, [...(byDate.get(w.date) ?? []), w])
   const todays = byDate.get(today) ?? []
@@ -130,6 +134,33 @@ export function TodayPage() {
             )}
           </section>
 
+          {open.length > 0 && (
+            <details open={open.length <= 3} className="group mt-6">
+              <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-bold">
+                <span>
+                  Noch offen
+                  <span className="ml-2 rounded-full bg-amber-500/15 px-2 py-0.5 text-sm text-amber-700 dark:text-amber-300">
+                    {open.length}
+                  </span>
+                </span>
+                <ChevronDown size={20} className="text-slate-400 transition-transform group-open:rotate-180" aria-hidden />
+              </summary>
+              <p className="mt-1 mb-2 text-sm text-slate-500 dark:text-slate-400">
+                Aus den letzten 7 Tagen – abhaken oder als ausgelassen markieren.
+              </p>
+              <div className="space-y-3">
+                {groupBricks(open).map((g) => (
+                  <div key={g[0].id}>
+                    <p className="mb-1 text-xs font-semibold text-slate-500 uppercase dark:text-slate-400">
+                      {formatDate(g[0].date, { weekday: 'short', day: 'numeric', month: 'short' })}
+                    </p>
+                    <WorkoutGroup group={g} />
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
+
           {endingPlans.map((p) => (
             <p key={p.id} className="mt-4 rounded-xl bg-sky-500/10 px-3 py-2 text-sm text-sky-800 dark:text-sky-200">
               „{p.name}“ endet am {formatDate(p.endDate!, { weekday: 'long', day: 'numeric', month: 'long' })}. Denk
@@ -158,7 +189,7 @@ export function TodayPage() {
                     </p>
                     <div className="space-y-2">
                       {groupBricks(list).map((g) => (
-                        <WorkoutGroup key={g[0].id} group={g} />
+                        <WorkoutGroup key={g[0].id} group={g} actions={false} />
                       ))}
                     </div>
                   </div>

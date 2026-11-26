@@ -123,9 +123,10 @@ bleiben nur auf dem Gerät.
 - [x] 2. Datenbank, Import/Export (JSON), eigener Plan als Importdatei
 - [x] 3. „Heute“-Ansicht mit Wettkampf-Countdown
 - [x] 4. Veröffentlichung (GitHub Pages) + PWA → aufs iPhone
-- [ ] 5. Einheit abschließen
-- [ ] 6. Pläne verwalten
-- [ ] 7. Einheit-Editor mit Abschnitten und Kraftübungen
-- [ ] 8. Wochenansicht mit Drag & Drop
-- [ ] 9. Einstellungen & HF-Zonen
-- [ ] 10. Dashboard
+- [x] 5. Einheit abschließen
+- [ ] 6. Strava-Sync (Garmin → Strava → TriPlan, automatisch beim Öffnen)
+- [ ] 7. Pläne verwalten
+- [ ] 8. Einheit-Editor mit Abschnitten und Kraftübungen
+- [ ] 9. Wochenansicht mit Drag & Drop
+- [ ] 10. Einstellungen & HF-Zonen
+- [ ] 11. Dashboard

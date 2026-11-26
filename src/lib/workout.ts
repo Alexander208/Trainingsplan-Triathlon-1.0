@@ -80,3 +80,22 @@ export function groupBricks(workouts: Workout[]): Workout[][] {
   }
   return groups
 }
+
+/**
+ * Tempo passend zur Sportart:
+ * Laufen → min/km, Schwimmen → min/100 m, Rad → km/h.
+ */
+export function formatPace(sport: Sport, durationMin?: number, distanceM?: number): string | undefined {
+  if (!durationMin || !distanceM) return undefined
+  const secPer = (meters: number) => (durationMin * 60) / (distanceM / meters)
+  const mmss = (sec: number) => `${Math.floor(sec / 60)}:${String(Math.round(sec % 60)).padStart(2, '0')}`
+  if (sport === 'run') return `${mmss(secPer(1000))} min/km`
+  if (sport === 'swim') return `${mmss(secPer(100))} min/100 m`
+  if (sport === 'bike') return `${((distanceM / 1000) / (durationMin / 60)).toLocaleString('de-DE', { maximumFractionDigits: 1 })} km/h`
+  return undefined
+}
+
+/** Distanzen werden beim Schwimmen in Metern, sonst in Kilometern eingegeben. */
+export function distanceUnit(sport: Sport): 'm' | 'km' {
+  return sport === 'swim' ? 'm' : 'km'
+}
