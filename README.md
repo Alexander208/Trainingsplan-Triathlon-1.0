@@ -73,10 +73,24 @@ src/
     plans/        Pläne verwalten
     dashboard/    Statistik
     settings/     Einstellungen
-  lib/          Hilfsfunktionen (z. B. Dark Mode)
+  db/           Datenbank (Dexie/IndexedDB), Backup & Import
+  data/         Demo-Daten (später Vorlagen)
+  lib/          Hilfsfunktionen (Datum, Dauer/Distanz, Dark Mode, IDs)
+  types/        Datenmodell (TypeScript-Typen)
   App.tsx       Seiten/Routen
   index.css     Design-Grundlagen (Tailwind, Farben pro Sportart)
 ```
+
+## Trainingsplan importieren / Backup
+
+Unter **Einstellungen → Daten**:
+- **Importieren**: eine TriPlan-JSON-Datei wählen (z. B. `mein-plan.json` oder ein Backup).
+  Gleiche Einträge werden aktualisiert, nicht verdoppelt. Bereits erledigte Einheiten bleiben erledigt.
+- **Backup**: speichert alle Daten als JSON-Datei (iPhone: Teilen-Menü → „In Dateien sichern“).
+- **Demo laden**: anonyme Beispielwoche zum Ausprobieren.
+
+Aufbau der Datei: `{ "app": "triplan", "schemaVersion": 1, "data": { plans, weeks, workouts, races, settings } }`
+– die genauen Felder stehen in `src/types/index.ts`.
 
 ## Datenschutz
 Das Repository ist öffentlich. Persönliche Trainingsdaten (z. B. `mein-plan.json`) sind in
@@ -85,7 +99,7 @@ bleiben nur auf dem Gerät.
 
 ## Fortschritt
 - [x] 1. Grundgerüst: Navigation, Dark Mode, README
-- [ ] 2. Datenbank, Import/Export (JSON), eigener Plan als Importdatei
+- [x] 2. Datenbank, Import/Export (JSON), eigener Plan als Importdatei
 - [ ] 3. „Heute“-Ansicht mit Wettkampf-Countdown
 - [ ] 4. Veröffentlichung (GitHub Pages) + PWA → aufs iPhone
 - [ ] 5. Einheit abschließen
