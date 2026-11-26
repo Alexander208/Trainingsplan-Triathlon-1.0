@@ -34,3 +34,8 @@ export function todayISO(): ISODate {
 export function formatDate(s: ISODate, opts: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'short' }) {
   return fromISODate(s).toLocaleDateString('de-DE', opts)
 }
+
+/** Anzahl Tage von `from` bis `to` (negativ, wenn `to` vorher liegt). */
+export function daysBetween(from: string, to: string): number {
+  return Math.round((fromISODate(to).getTime() - fromISODate(from).getTime()) / 86_400_000)
+}

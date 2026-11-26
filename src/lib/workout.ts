@@ -59,3 +59,24 @@ export function formatHr(hr?: HrTarget): string | undefined {
   if (range && label) return `${label} (${range})`
   return range ?? label
 }
+
+/** Kurzinfo „60 min · 1.800 m“ bzw. „variabel“. */
+export function workoutSummary(w: Workout): string {
+  if (w.durationVariable) return 'Dauer variabel'
+  const t = plannedTotals(w)
+  const parts = []
+  if (t.distanceM) parts.push(formatDistance(t.distanceM, w.sport))
+  if (t.durationMin) parts.push(formatDuration(t.durationMin))
+  return parts.join(' · ')
+}
+
+/** Fasst direkt zusammengehörige Einheiten (gleiche brickGroupId) zu Gruppen zusammen. */
+export function groupBricks(workouts: Workout[]): Workout[][] {
+  const groups: Workout[][] = []
+  for (const w of workouts) {
+    const last = groups[groups.length - 1]
+    if (last && w.brickGroupId && last[0].brickGroupId === w.brickGroupId) last.push(w)
+    else groups.push([w])
+  }
+  return groups
+}

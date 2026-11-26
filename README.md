@@ -100,7 +100,7 @@ bleiben nur auf dem Gerät.
 ## Fortschritt
 - [x] 1. Grundgerüst: Navigation, Dark Mode, README
 - [x] 2. Datenbank, Import/Export (JSON), eigener Plan als Importdatei
-- [ ] 3. „Heute“-Ansicht mit Wettkampf-Countdown
+- [x] 3. „Heute“-Ansicht mit Wettkampf-Countdown
 - [ ] 4. Veröffentlichung (GitHub Pages) + PWA → aufs iPhone
 - [ ] 5. Einheit abschließen
 - [ ] 6. Pläne verwalten
