@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+/* Dark Mode über die Klasse "dark" am <html>-Element */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Farben pro Sportart – nutzbar als z. B. bg-swim, text-run */
+@theme {
+  --color-swim: #3b82f6;
+  --color-bike: #f97316;
+  --color-run: #22c55e;
+  --color-strength: #a855f7;
+  --color-other: #94a3b8;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+}
+
+html,
+body {
+  @apply bg-slate-50 text-slate-900 antialiased dark:bg-[#0b0f17] dark:text-slate-100;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#root {
+  min-height: 100dvh;
+}
